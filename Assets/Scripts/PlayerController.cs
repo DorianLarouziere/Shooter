@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] private GameObject player;
     [SerializeField] private Transform playerTransform;
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private GameObject bulletPrefab;
@@ -18,8 +17,8 @@ public class PlayerController : MonoBehaviour
     private float xRotation;
     private float yRotation;
     private Vector2 input;
-    private Vector3 camF;
-    private Vector3 camR;
+    private Vector3 cameraForward;
+    private Vector3 cameraRight;
     private Camera camera;
     GameObject bullet;
 
@@ -41,14 +40,14 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(SpawnBullets());
         }*/
 
-        camF = cameraTransform.forward;
-        camR = cameraTransform.right;
-        camF.y = 0;
-        camR.y = 0;
-        camF = camF.normalized;
-        camR = camR.normalized;
+        cameraForward = cameraTransform.forward;
+        cameraRight = cameraTransform.right;
+        cameraForward.y = 0;
+        cameraRight.y = 0;
+        cameraForward = cameraForward.normalized;
+        cameraRight = cameraRight.normalized;
         input = new Vector2(Input.GetAxis("Horizontal"),Input.GetAxis("Vertical"));
-        playerTransform.position +=(camF*input.y + camR*input.x) * Time.deltaTime * playerSpeed;
+        playerTransform.position +=(cameraForward*input.y + cameraRight*input.x) * Time.deltaTime * playerSpeed;
 
         mouseX = Input.GetAxis("Mouse X") * horizontalSensitivity;
         mouseY = Input.GetAxis("Mouse Y") * verticalSensitivity;
@@ -65,19 +64,19 @@ public class PlayerController : MonoBehaviour
         //J'instantie la balle
         bullet = Instantiate(bulletPrefab, cameraTransform.position, Quaternion.identity);
 
-        //Je récupère son rigidbody
+        //Je rÃ©cupÃ¨re son rigidbody
         Rigidbody bulletRigidbody = bullet.GetComponent<Rigidbody>();
 
-        //J'applique une force initiale à la balle, AddForce prend en paramètre la direction de la force et son intensité
+        //J'applique une force initiale Ã  la balle, AddForce prend en paramÃ¨tre la direction de la force et son intensitÃ©
         bulletRigidbody.AddForce(cameraTransform.forward * 1000f);
     }
 
-    private IEnumerator SpawnBullets() //On crée une coroutine
+    private IEnumerator SpawnBullets() //On crÃ©e une coroutine
     {
         for(int i = 0; i<5; i++)
         {
             SpawnBullet();
-            yield return new WaitForSeconds(.1f); //Programme attend 2secondes puis fait spawn la deuxième balle
+            yield return new WaitForSeconds(.1f); //Programme attend 2secondes puis fait spawn la deuxiÃ¨me balle
         }
     }
 }
