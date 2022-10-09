@@ -28,7 +28,7 @@ public class targetsController : MonoBehaviour
             randomZ = Random.Range(-20, 20);
             rotation = Quaternion.Euler(Random.Range(0, 90), Random.Range(0, 360), 0);
             Instantiate(prefabTarget, new Vector3(randomX, randomY, randomZ), rotation);
-            Debug.Log("instantiate");
+            //Debug.Log("instantiate");
             Timer = appearanceFrequency;
         }
     }
